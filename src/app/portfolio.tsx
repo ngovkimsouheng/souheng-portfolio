@@ -964,13 +964,13 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
       <footer className="bg-zinc-900 border-t-4 border-zinc-700 py-8">
         <div className="container mx-auto md:max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <span className="bebas text-2xl text-yellow-300 tracking-wider">
-            SOK
+            souheng
             <span className="text-rose-500 inline-block intro-spark ml-0.5">
               *
             </span>
           </span>
           <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest">
-            © 2026 Sok Designer — All rights reserved
+            © 2026 souhengkim — All rights reserved
           </p>
           <button
             onClick={() => scrollTo("home")}
