@@ -165,14 +165,29 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
           }
         }
 
-        @keyframes intro-slide-right {
+        @keyframes intro-image {
           0% {
             opacity: 0;
-            transform: translate3d(2.5rem, 0, 0) scale(0.97);
+            clip-path: inset(-2.5rem -2.5rem 100%);
+            transform: translate3d(0, 2.5rem, 0);
           }
           to {
             opacity: 1;
-            transform: translate3d(0, 0, 0) scale(1);
+            clip-path: inset(-2.5rem -2.5rem);
+            transform: translate3d(0, 0, 0);
+          }
+        }
+
+        @keyframes intro-slide-right {
+          0% {
+            opacity: 0;
+            clip-path: inset(-2.5rem -2.5rem 100%);
+            transform: translate3d(0, 2.5rem, 0);
+          }
+          to {
+            opacity: 1;
+            clip-path: inset(-2.5rem -2.5rem);
+            transform: translate3d(0, 0, 0);
           }
         }
 
@@ -240,37 +255,44 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
         .intro {
           animation-duration: 1.4s;
           animation-timing-function: var(--ease-out-expo);
+          animation-delay: var(--d, 0s);
           animation-fill-mode: both;
           will-change: transform, opacity;
         }
 
         .intro-from-left {
           animation-name: intro-from-left;
+          animation-delay: var(--d, 0s);
         }
 
         .intro-from-right {
           animation-name: intro-from-right;
+          animation-delay: var(--d, 0s);
         }
 
+        .intro-image,
         .intro-slide-right {
-          animation-name: intro-slide-right;
-          animation-duration: 1.5s;
+          animation-name: intro-image;
+          animation-duration: 1.4s;
           animation-timing-function: var(--ease-out-expo);
+          animation-delay: var(--d, 650ms);
           animation-fill-mode: both;
-          will-change: transform, opacity;
+          will-change: transform, opacity, clip-path;
         }
 
         .intro-spark {
           animation-name: intro-spark;
           animation-duration: 1.6s;
           animation-timing-function: var(--ease-out-expo);
+          animation-delay: var(--d, 0s);
           animation-fill-mode: both;
         }
 
         .intro-soft {
           animation-name: intro-soft;
-          animation-duration: 1.4s;
+          animation-duration: 1.5s;
           animation-timing-function: var(--ease-out-expo);
+          animation-delay: var(--d, 0s);
           animation-fill-mode: both;
           will-change: transform, opacity;
         }
@@ -299,7 +321,7 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .intro, .intro-title, .intro-word, .intro-spark, .intro-soft, .reveal-item, .cursor-blink {
+          .intro, .intro-title, .intro-word, .intro-spark, .intro-soft, .intro-image, .intro-slide-right, .reveal-item, .cursor-blink {
             animation: none !important;
             transition: none !important;
             opacity: 1 !important;
@@ -491,10 +513,10 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                 </div>
               </div>
 
-              {/* Right side — image with reveal, restored yellow background, and smooth hover */}
+              {/* Right side — image with reveal consistent with HELLO, I'M HENG */}
               <div
                 style={{ "--d": "650ms" } as React.CSSProperties}
-                className="intro intro-slide-right lg:col-span-5 flex flex-col gap-6 group cursor-pointer"
+                className="intro intro-image lg:col-span-5 flex flex-col gap-6 group cursor-pointer"
               >
                 <div className="relative mt-4 mr-4">
                   {/* Yellow brutalist offset background frame */}
@@ -522,7 +544,7 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                       src={currentImageSrc}
                       alt="Profile"
                       onError={() => setImgError(true)}
-                      className="relative z-10 w-full aspect-[4/5] object-cover grayscale contrast-110 border-brutal bg-zinc-200 transition-transform duration-300 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1"
+                      className="relative z-10 w-full aspect-[4/5] object-cover grayscale contrast-110 group-hover:grayscale-0 border-brutal bg-zinc-200 transition-all duration-500 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1"
                     />
                   )}
                   {/* Role badge */}
