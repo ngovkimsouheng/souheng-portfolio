@@ -70,15 +70,40 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-revealed");
-            revealObserver.unobserve(entry.target);
+            const el = entry.target as HTMLElement;
+            if (el.style.transitionDelay && !el.style.animationDelay) {
+              el.style.animationDelay = el.style.transitionDelay;
+            }
+            el.classList.add("is-revealed");
+            revealObserver.unobserve(el);
+
+            const onEnd = () => {
+              el.classList.add("reveal-complete");
+              el.style.animation = "none";
+              el.style.opacity = "1";
+              el.style.transform = "none";
+              el.style.clipPath = "none";
+            };
+            el.addEventListener("animationend", onEnd, { once: true });
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0, rootMargin: "0px 0px 50px 0px" },
     );
 
-    revealElements.forEach((el) => revealObserver.observe(el));
+    revealElements.forEach((el) => {
+      revealObserver.observe(el);
+      // Immediate trigger for elements already in viewport
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.style.transitionDelay && !htmlEl.style.animationDelay) {
+          htmlEl.style.animationDelay = htmlEl.style.transitionDelay;
+        }
+        htmlEl.classList.add("is-revealed");
+        revealObserver.unobserve(htmlEl);
+      }
+    });
 
     return () => {
       obs.disconnect();
@@ -307,21 +332,49 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
           will-change: transform, opacity;
         }
 
-        /* Scroll reveal styling - GPU transform based */
+        /* Scroll reveal styling - Signature brutalist curtain unmask (Consistent with HELLO, I'M HENG) */
+        @keyframes reveal-up {
+          0% {
+            opacity: 0;
+            clip-path: inset(-2.5rem -2.5rem 100%);
+            transform: translate3d(0, 2.5rem, 0);
+          }
+          to {
+            opacity: 1;
+            clip-path: inset(-2.5rem -2.5rem);
+            transform: translate3d(0, 0, 0);
+          }
+        }
+
         .reveal-item {
           opacity: 0;
-          transform: translate3d(0, 2rem, 0);
-          transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
-          will-change: opacity, transform;
         }
 
         .reveal-item.is-revealed {
-          opacity: 1;
-          transform: translate3d(0, 0, 0);
+          animation: reveal-up 1.4s var(--ease-out-expo) both;
+          will-change: transform, opacity, clip-path;
+        }
+
+        .reveal-item.reveal-complete {
+          opacity: 1 !important;
+          clip-path: none !important;
+          transform: none;
+          animation: none !important;
+        }
+
+        /* Skill bars wipe-in synchronized with section reveal */
+        .reveal-item .skill-bar-fill {
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 1.4s var(--ease-out-expo);
+        }
+
+        .reveal-item.is-revealed .skill-bar-fill {
+          transform: scaleX(1);
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .intro, .intro-title, .intro-word, .intro-spark, .intro-soft, .intro-image, .intro-slide-right, .reveal-item, .cursor-blink {
+          .intro, .intro-title, .intro-word, .intro-spark, .intro-soft, .intro-image, .intro-slide-right, .reveal-item, .skill-bar-fill, .cursor-blink {
             animation: none !important;
             transition: none !important;
             opacity: 1 !important;
@@ -335,8 +388,8 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
         .shadow-brutal-coral { box-shadow: 6px 6px 0px #f43f5e; }
         .shadow-brutal-yellow { box-shadow: 6px 6px 0px #eab308; }
         .hover-lift { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-        .hover-lift:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px #18181b; }
-        .hover-lift-coral:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px #f43f5e; }
+        .hover-lift:hover { transform: translate(-3px, -3px) !important; box-shadow: 9px 9px 0px #18181b; }
+        .hover-lift-coral:hover { transform: translate(-3px, -3px) !important; box-shadow: 9px 9px 0px #f43f5e; }
         .marquee { animation: marquee 18s linear infinite; }
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .diagonal-bg { background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(234,179,8,0.08) 10px, rgba(234,179,8,0.08) 20px); }
@@ -839,12 +892,12 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                         {pct}%
                       </span>
                     </div>
-                    <div className="h-4 bg-zinc-800 border-2 border-zinc-600 overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-yellow-300 to-rose-500 border-r-2 border-zinc-900 transition-all duration-1000 ease-out"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
+                      <div className="h-4 bg-zinc-800 border-2 border-zinc-600 overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-yellow-300 to-rose-500 border-r-2 border-zinc-900 skill-bar-fill"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                   </div>
                 ))}
               </div>
@@ -893,7 +946,7 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                   <br />
                   TOGETHER
                 </h2>
-                <p className="text-zinc-600 text-base leading-relaxed mb-10 max-w-sm">
+                <p className="text-zinc-600 text-base leading-relaxed mb-10 max-w-md">
                   Have a project in mind? I&apos;d love to hear about it. Drop
                   me a message and let&apos;s make something unforgettable.
                 </p>
