@@ -549,17 +549,17 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
 
                 <div
                   style={{ "--d": "1450ms" } as React.CSSProperties}
-                  className="intro intro-soft flex flex-wrap mb-6 gap-4"
+                  className="intro intro-soft  flex md:flex-wrap mb-6 max-sm:gap-6 gap-4"
                 >
                   <button
                     onClick={() => scrollTo("experience")}
-                    className="px-8 py-4 bg-zinc-900 text-zinc-50 text-sm font-bold uppercase tracking-widest border-brutal shadow-brutal hover-lift cursor-pointer type-label"
+                    className="px-8 py-4 bg-zinc-900 text-zinc-50 max-sm:text-[10px] text-sm font-bold uppercase tracking-widest border-brutal shadow-brutal hover-lift cursor-pointer type-label"
                   >
                     My Work
                   </button>
                   <button
                     onClick={() => scrollTo("contact")}
-                    className="px-8 py-4 bg-yellow-300 text-zinc-900 text-sm font-bold uppercase tracking-widest border-brutal shadow-brutal-coral hover-lift-coral transition-all duration-150 cursor-pointer type-label"
+                    className="px-8 py-4 bg-yellow-300 max-sm:text-[10px] text-zinc-900 text-sm font-bold uppercase tracking-widest border-brutal shadow-brutal-coral hover-lift-coral transition-all duration-150 cursor-pointer type-label"
                   >
                     Let&apos;s Talk
                   </button>
@@ -603,7 +603,7 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                   {/* Role badge */}
                   <div className="absolute bottom-4 left-4 z-20 bg-rose-500 border-brutal px-4 py-2 shadow-brutal transition-transform duration-300 ease-out group-hover:-translate-y-0.5">
                     <p className="text-white text-xs font-black uppercase tracking-widest type-label">
-                      SENIOR UI/UX DESIGNER
+                      SENIOR AT NORTON UNI
                     </p>
                   </div>
                 </div>
@@ -779,7 +779,7 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                 <span className="bebas text-rose-500 text-xl tracking-widest block mb-2">
                   Education
                 </span>
-                <h2 className="bebas text-5xl sm:text-6xl text-zinc-900 leading-none">
+                <h2 className="bebas max-sm:text-4xl text-5xl sm:text-6xl text-zinc-900 leading-none">
                   ACADEMIC
                   <br />
                   BACKGROUND
@@ -892,12 +892,12 @@ export default function Portfolio4({ imageSrc }: PortfolioProps = {}) {
                         {pct}%
                       </span>
                     </div>
-                      <div className="h-4 bg-zinc-800 border-2 border-zinc-600 overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-yellow-300 to-rose-500 border-r-2 border-zinc-900 skill-bar-fill"
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
+                    <div className="h-4 bg-zinc-800 border-2 border-zinc-600 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-yellow-300 to-rose-500 border-r-2 border-zinc-900 skill-bar-fill"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
